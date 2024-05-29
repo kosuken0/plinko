@@ -74,7 +74,7 @@ function dropBalls(count) {
 
     for (let i = 0; i < count; i++) {
         setTimeout(() => {
-            const ball = Bodies.circle(canvas.width / 2, 20, 10, { restitution: 0.5, friction: 1, render: { fillStyle: '#00f' } });
+            const ball = Bodies.circle(canvas.width / 2, 20, 10, { restitution: 0.5, friction: 100, render: { fillStyle: '#00f' } });
             ball.label = 'ball';
             World.add(world, ball);
         }, i * 100);
