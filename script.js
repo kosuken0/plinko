@@ -89,3 +89,4 @@ function hackGame() {
 betBtn.addEventListener('click', dropBall);
 hackBtn.addEventListener('click', hackGame);
 drawBoard();
+
