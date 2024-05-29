@@ -72,7 +72,7 @@ function dropBalls(count) {
 
   for (let i = 0; i < count; i++) {
     setTimeout(() => {
-      const ball = Bodies.circle(canvas.width / 2, 20, 10, { restitution: 0.5 });
+      const ball = Bodies.circle(canvas.width / 2, 10, 10, { restitution: 0.5 });
       World.add(world, ball);
     }, i * 100);
   }
