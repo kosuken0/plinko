@@ -9,7 +9,7 @@ let chips = 100;
 
 chipsDisplay.textContent = `Chips: ${chips}`;
 
-const { Engine, Render, Runner, Bodies, World, Events } = Matter;
+const { Engine, Render, Runner, Bodies, World, Events, Body } = Matter;
 
 const engine = Engine.create();
 const world = engine.world;
@@ -36,27 +36,30 @@ function drawBoard() {
         for (let col = 0; col <= row; col++) {
             const x = canvas.width / 2 + col * pegSpacing - row * pegSpacing / 2;
             const y = row * pegSpacing + 50;
-            World.add(world, Bodies.circle(x, y, 5, { isStatic: true }));
+            World.add(world, Bodies.circle(x, y, 5, { isStatic: true, render: { fillStyle: '#ffffff' } }));
         }
     }
 
     // Add walls
     World.add(world, [
-        Bodies.rectangle(canvas.width / 2, canvas.height + 25, canvas.width, 50, { isStatic: true }), // Bottom
-        Bodies.rectangle(-25, canvas.height / 2, 50, canvas.height, { isStatic: true }), // Left
-        Bodies.rectangle(canvas.width + 25, canvas.height / 2, 50, canvas.height, { isStatic: true }) // Right
+        Bodies.rectangle(canvas.width / 2, canvas.height + 25, canvas.width, 50, { isStatic: true, render: { visible: false } }), // Bottom
+        Bodies.rectangle(-25, canvas.height / 2, 50, canvas.height, { isStatic: true, render: { visible: false } }), // Left
+        Bodies.rectangle(canvas.width + 25, canvas.height / 2, 50, canvas.height, { isStatic: true, render: { visible: false } }) // Right
     ]);
 
     // Add slots and multipliers
     multipliers.forEach((multiplier, index) => {
         const x = index * pegSpacing + 20;
-        const y = canvas.height - 30;
+        const y = canvas.height - 50;
         ctx.fillStyle = '#fff';
         ctx.textAlign = 'center';
         ctx.font = 'bold 16px Ubuntu';
+        ctx.strokeStyle = '#000'; // Black outline
+        ctx.lineWidth = 4;
+        ctx.strokeText(`${multiplier}x`, x, y);
         ctx.fillText(`${multiplier}x`, x, y);
 
-        World.add(world, Bodies.rectangle(x, canvas.height - 50, pegSpacing, 10, { isStatic: true, label: `${multiplier}` }));
+        World.add(world, Bodies.rectangle(x, canvas.height - 50, pegSpacing, 10, { isStatic: true, label: `${multiplier}`, render: { visible: false } }));
     });
 }
 
@@ -71,7 +74,7 @@ function dropBalls(count) {
 
     for (let i = 0; i < count; i++) {
         setTimeout(() => {
-            const ball = Bodies.circle(canvas.width / 2, 20, 10, { restitution: 0.5, friction: 0.02 });
+            const ball = Bodies.circle(canvas.width / 2, 20, 10, { restitution: 0.5, friction: 0.02, render: { fillStyle: '#00f' } });
             ball.label = 'ball';
             World.add(world, ball);
         }, i * 100);
