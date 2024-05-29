@@ -1,0 +1,47 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #333;
+    color: #fff;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+#game-container {
+    text-align: center;
+}
+
+#plinkoCanvas {
+    background-color: #AA0000;
+    border: 2px solid #fff;
+    margin-bottom: 20px;
+}
+
+#controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+    margin: 0 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #00AA00;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #007700;
+}
+
+#chips {
+    font-size: 20px;
+    margin-left: 20px;
+}
