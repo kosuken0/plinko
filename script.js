@@ -17,8 +17,8 @@ const render = Render.create({
     canvas: canvas,
     engine: engine,
     options: {
-        width: 600,
-        height: 700,
+        width: 800,  // Increased width to fit more pegs
+        height: 900, // Increased height for more pegs
         wireframes: false,
         background: '#AA0000'
     }
@@ -29,8 +29,8 @@ Runner.run(Runner.create(), engine);
 
 function drawBoard() {
     const ballDiameter = 20;
-    const pegSpacing = ballDiameter;
-    const rows = 9;
+    const pegSpacing = ballDiameter * 1.5; // Spacing is 1.5 times the diameter of the balls
+    const rows = 11;  // Increased number of rows to fit more pegs
 
     // Add pegs
     for (let row = 1; row <= rows; row++) {
@@ -61,7 +61,12 @@ function drawBoard() {
         ctx.strokeText(`${multiplier}x`, x, y);
         ctx.fillText(`${multiplier}x`, x, y);
 
-        World.add(world, Bodies.rectangle(x, canvas.height - 25, pegSpacing, 10, { isStatic: true, label: `${multiplier}`, render: { visible: false } }));
+        // Add slot walls to prevent balls from bouncing out
+        World.add(world, [
+            Bodies.rectangle(x, canvas.height - 25, pegSpacing, 10, { isStatic: true, label: `${multiplier}`, render: { visible: false } }),
+            Bodies.rectangle(x - pegSpacing / 2, canvas.height - 12.5, 10, 25, { isStatic: true, render: { visible: false } }),
+            Bodies.rectangle(x + pegSpacing / 2, canvas.height - 12.5, 10, 25, { isStatic: true, render: { visible: false } })
+        ]);
     });
 }
 
@@ -79,7 +84,8 @@ function dropBalls(count) {
             const ball = Bodies.circle(canvas.width / 2, 20, 10, {
                 restitution: 0.5,
                 friction: 0.00001,
-                render: { fillStyle: '#00f' }
+                render: { fillStyle: '#00f' },
+                collisionFilter: { group: -1 }  // Ensure balls don't collide with each other
             });
 
             // Apply random force to the ball for a 50-50 chance
