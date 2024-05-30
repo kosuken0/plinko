@@ -28,7 +28,8 @@ Render.run(render);
 Runner.run(Runner.create(), engine);
 
 function drawBoard() {
-    const pegSpacing = 40;
+    const ballDiameter = 20;
+    const pegSpacing = ballDiameter;
     const rows = 9;
 
     // Add pegs
@@ -49,8 +50,9 @@ function drawBoard() {
 
     // Add slots and multipliers
     multipliers.forEach((multiplier, index) => {
-        const x = index * pegSpacing + 20;
+        const x = index * pegSpacing + pegSpacing / 2;
         const y = canvas.height - 50;
+
         ctx.fillStyle = '#fff';
         ctx.textAlign = 'center';
         ctx.font = 'bold 16px Ubuntu';
