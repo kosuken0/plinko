@@ -29,10 +29,10 @@ Runner.run(Runner.create(), engine);
 
 function drawBoard() {
     const pegSpacing = 40;
-    const rows = 9; // Reduced to remove topmost row
+    const rows = 9;
 
     // Add pegs
-    for (let row = 1; row <= rows; row++) { // Start from row 1 to skip top row
+    for (let row = 1; row <= rows; row++) {
         for (let col = 0; col <= row; col++) {
             const x = canvas.width / 2 + col * pegSpacing - row * pegSpacing / 2;
             const y = row * pegSpacing + 50;
@@ -59,7 +59,7 @@ function drawBoard() {
         ctx.strokeText(`${multiplier}x`, x, y);
         ctx.fillText(`${multiplier}x`, x, y);
 
-        World.add(world, Bodies.rectangle(x, canvas.height - 50, pegSpacing, 10, { isStatic: true, label: `${multiplier}`, render: { visible: false } }));
+        World.add(world, Bodies.rectangle(x, canvas.height - 25, pegSpacing, 10, { isStatic: true, label: `${multiplier}`, render: { visible: false } }));
     });
 }
 
@@ -74,7 +74,16 @@ function dropBalls(count) {
 
     for (let i = 0; i < count; i++) {
         setTimeout(() => {
-            const ball = Bodies.circle(canvas.width / 2, 20, 10, { restitution: 0.5, friction: 100, render: { fillStyle: '#00f' } });
+            const ball = Bodies.circle(canvas.width / 2, 20, 10, {
+                restitution: 0.5,
+                friction: 0.00001,
+                render: { fillStyle: '#00f' }
+            });
+
+            // Apply random force to the ball for a 50-50 chance
+            const forceDirection = Math.random() < 0.5 ? -0.01 : 0.01;
+            Body.applyForce(ball, { x: ball.position.x, y: ball.position.y }, { x: forceDirection, y: 0 });
+
             ball.label = 'ball';
             World.add(world, ball);
         }, i * 100);
@@ -84,9 +93,13 @@ function dropBalls(count) {
 Events.on(engine, 'collisionStart', event => {
     event.pairs.forEach(pair => {
         if (pair.bodyB.label !== 'ball') {
-            const winMultiplier = parseFloat(pair.bodyB.label);
+            const ball = pair.bodyA.label === 'ball' ? pair.bodyA : pair.bodyB;
+            const slot = pair.bodyA.label !== 'ball' ? pair.bodyA : pair.bodyB;
+            const winMultiplier = parseFloat(slot.label);
             chips += winMultiplier;
             chipsDisplay.textContent = `Chips: ${chips}`;
+            // Remove the ball from the world to keep it in the slot
+            World.remove(world, ball);
         }
     });
 });
