@@ -1,3 +1,3 @@
-# [site over here](https://kosukensan.github.io/plinko/)
+# [site over here](https://kosuken0.github.io/plinko/)
 
-https://kosukensan.github.io/plinko/
+https://kosuken0.github.io/plinko/
